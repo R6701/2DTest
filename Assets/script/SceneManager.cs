@@ -19,7 +19,12 @@ public class SceneManager : MonoBehaviour
     public Button backToHomeBtn;
 
     //grahic
-    public Button backToSettingBtn;
+
+
+    //selectStage
+    public Button playerDetaBtn;
+    public Button backToHomeBtnOnSelectStage;
+    public Button backToSelectStageBtn;
 
     public GameObject gameScene;
     public GameObject homeScene;
@@ -28,6 +33,9 @@ public class SceneManager : MonoBehaviour
     public GameObject graphicScene;
     public GameObject audioScene;
     public GameObject languageScene;
+
+    public GameObject selectStageScene;
+    public GameObject playerDetaScene;
 
     // Start is called before the first frame update
     void Start()
@@ -40,17 +48,15 @@ public class SceneManager : MonoBehaviour
         audioBtn.onClick.AddListener(OpenAudioSetting);
         languageBtn.onClick.AddListener(OpenLanguageSetting);
         backToHomeBtn.onClick.AddListener(CloseSettingBtn);
-    }
 
-
-    public void OnButtonClick()
-    {
-        Debug.Log("OnButtonClick");
+        playerDetaBtn.onClick.AddListener(OpenPlayerDeta);
+        backToHomeBtnOnSelectStage.onClick.AddListener(BackToHome);
+        backToSelectStageBtn.onClick.AddListener(BackToSelectStage);
     }
 
     public void PlayBtn()
     {
-        gameScene.SetActive(true);
+        selectStageScene.SetActive(true);
         homeScene.SetActive(false);
     }
 
@@ -99,5 +105,24 @@ public class SceneManager : MonoBehaviour
         languageScene.SetActive(false);
         graphicScene.SetActive(false);
         audioScene.SetActive(false);
+        selectStageScene.SetActive(false);
+    }
+
+    public void BackToHome()
+    {
+        homeScene.SetActive(true);
+        selectStageScene.SetActive(false);
+    }
+
+    public void OpenPlayerDeta()
+    {
+        playerDetaScene.SetActive(true);
+        selectStageScene.SetActive(false);
+    }
+
+    public void BackToSelectStage()
+    {
+        playerDetaScene.SetActive(false);
+        selectStageScene.SetActive(true);
     }
 }

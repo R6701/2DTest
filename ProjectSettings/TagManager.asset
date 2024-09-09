@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Block
   - GameManager
+  - ballObj
   layers:
   - Default
   - TransparentFX

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -13,11 +14,13 @@ public class BallController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         gameManager = GameObject.FindGameObjectWithTag(gameManagerTag).GetComponent<GameManager>();
-        LaunchBall();
+        StartCoroutine(LaunchBall());
     }
 
-    void LaunchBall()
+    IEnumerator LaunchBall()
     {
+
+        yield return new WaitForSeconds(2f);
         // ボールをランダムな方向に発射
         float xDirection = Random.Range(-1f, 1f); // 左右ランダム
         Vector2 direction = new Vector2(xDirection, 1).normalized; // 上方向へ

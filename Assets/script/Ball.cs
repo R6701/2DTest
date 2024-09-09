@@ -1,19 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
     public GameObject ballPrefab; // 分裂時に生成するボールのプレハブ
     public Transform ballTrn;
     public Rigidbody2D rb;
+    private RectTransform rectTransform;
+    public CircleCollider2D circleCollider;
+    public PlayerPower playerPower;
+    public bool isCritical;
+    public Image image;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        image = GetComponent<Image>();
         ballTrn = GameObject.Find("ballObj").transform;        //SplitBall();
+        rectTransform = GetComponent<RectTransform>();
+        playerPower = GameObject.Find("PlayerDeta").GetComponent<PlayerPower>();
+        SetBallSize(1 + playerPower.ballSize);
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Paddle"))
+        {
+            // ダメージ計算処理
+            ApplyDamage(playerPower.criticalChance);
+        }
+    }
+
+    void ApplyDamage(float critChance)
+    {
+        if (Random.value < critChance) // 0.0から1.0のランダム値がcritChance以下の場合
+        {
+             // ダメージを倍にする
+            Debug.Log($"Critical hit! Damage dealt");
+            gameObject.GetComponent<Image>().color = UnityEngine.Color.red;
+            isCritical = true;
+        } else
+        {
+            Debug.Log($"Normal hit. Damage dealt");
+            isCritical = false;
+        }
+    }
 
     // 分裂する処理
     public void SplitBall()
@@ -56,4 +90,11 @@ public class Ball : MonoBehaviour
         newRb.velocity = direction * rb.velocity.magnitude; // 速度は元のボールと同じ
     }
 
+
+    public void SetBallSize(float size)
+    {
+        // ボールの表示サイズと当たり判定のサイズを設定
+        transform.localScale = new Vector3(size, size, 1);  // 表示サイズの調整
+        //circleCollider.radius = size / 2;  // Colliderの半径を設定
+    }
 }
